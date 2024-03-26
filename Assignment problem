@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
+
+#define N 4 // Number of workers and tasks
+
+// Function to find minimum cost assignment using Branch and Bound
+void assignJobs(int costMatrix[N][N]);
+
+// Structure to represent a node in the search tree
+typedef struct Node {
+    int assigned[N]; // Represents task assigned to worker
+    bool visited[N]; // Represents if task is already assigned to any worker
+    int cost; // Represents the cost of assignment
+    int worker; // Index of the worker to which this node belongs
+    int level; // Level of the node in the search tree
+} Node;
+
+// Function to create a new node
+Node* newNode(int parentAssigned[], bool parentVisited[], int cost, int worker, int level) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    for (int i = 0; i < N; i++) {
+        node->assigned[i] = parentAssigned[i];
+        node->visited[i] = parentVisited[i];
+    }
+    node->assigned[worker] = level;
+    node->visited[level] = true;
+    node->cost = cost;
+    node->worker = worker;
+    node->level = level;
+    return node;
+}
+
+// Function to find the minimum cost using Branch and Bound
+int branchAndBound(int costMatrix[N][N]) {
+    int minCost = INT_MAX; // Initialize minimum cost
+
+    // Create initial node
+    Node* rootNode = newNode({-1}, {false}, 0, -1, 0);
+
+    // Initialize priority queue
+    PriorityQueue pq;
+    initialize(&pq);
+
+    // Enqueue the root node
+    enqueue(&pq, rootNode);
+
+    // Loop until priority queue is not empty
+    while (!isEmpty(&pq)) {
+        Node* current = dequeue(&pq); // Dequeue the node with minimum cost
+
+        // If level is N, update minCost if current cost is less than minCost
+        if (current->level == N && current->cost < minCost) {
+            minCost = current->cost;
+        }
+
+        // Iterate over each worker
+        for (int i = 0; i < N; i++) {
+            // If task is not assigned to any worker
+            if (!current->visited[i]) {
+                // Create new child node with current worker and level
+                Node* childNode = newNode(current->assigned, current->visited, current->cost + costMatrix[current->worker][i], current->worker + 1, current->level + 1);
+
+                // Enqueue child node if its cost is less than minCost
+                if (childNode->cost < minCost) {
+                    enqueue(&pq, childNode);
+                }
+            }
+        }
+    }
+
+    // Free memory allocated to priority queue
+    freePriorityQueue(&pq);
+
+    return minCost;
+}
+
+// Driver function
+int main() {
+    int costMatrix[N][N] = {
+        {9, 2, 7, 8},
+        {6, 4, 3, 7},
+        {5, 8, 1, 8},
+        {7, 6, 9, 4}
+    };
+
+    printf("Minimum cost using Branch and Bound: %d\n", branchAndBound(costMatrix));
+
+    return 0;
+}
