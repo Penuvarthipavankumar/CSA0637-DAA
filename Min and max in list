@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+int main() {
+    int n, i;
+    
+    printf("Enter the number of elements in the list: ");
+    scanf("%d", &n);
+
+    // Error handling if the list size is not valid
+    if (n <= 0) {
+        printf("Invalid list size\n");
+        return 1;
+    }
+
+    int numbers[n];
+    
+    printf("Enter the elements of the list:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &numbers[i]);
+    }
+
+    // Initialize minimum and maximum with the first element of the list
+    int min = numbers[0];
+    int max = numbers[0];
+
+    // Loop through the list to find the minimum and maximum values
+    for (i = 1; i < n; i++) {
+        if (numbers[i] < min) {
+            min = numbers[i];
+        }
+        if (numbers[i] > max) {
+            max = numbers[i];
+        }
+    }
+
+    // Print the minimum and maximum values
+    printf("Minimum value in the list: %d\n", min);
+    printf("Maximum value in the list: %d\n", max);
+
+    return 0;
+}
