@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+#define CONTAINER_CAPACITY 10 // Maximum capacity of the container
+
+// Function to load items into containers
+void loadItems(int items[], int n) {
+    int container = 1; // Container number
+    int capacity = CONTAINER_CAPACITY; // Remaining capacity of the current container
+
+    printf("Loading items into containers:\n");
+
+    for (int i = 0; i < n; i++) {
+        if (items[i] <= capacity) {
+            printf("Item %d fits into container %d\n", items[i], container);
+            capacity -= items[i]; // Update remaining capacity
+        } else {
+            container++; // Move to the next container
+            capacity = CONTAINER_CAPACITY - items[i]; // Reset capacity
+            printf("Item %d does not fit into container %d. Placing it into container %d.\n", items[i], container - 1, container);
+        }
+    }
+}
+
+int main() {
+    int items[] = {2, 5, 3, 7, 1, 4, 6}; // Sizes of items
+    int n = sizeof(items) / sizeof(items[0]); // Number of items
+
+    loadItems(items, n);
+
+    return 0;
+}
