@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+// Function to check if a number is prime
+bool isPrime(int n, int divisor) {
+    // Base cases
+    if (n <= 1)
+        return false;
+    if (divisor == 1)
+        return true;
+    
+    // If n is divisible by any number other than 1 and itself, it's not prime
+    if (n % divisor == 0 && n != divisor)
+        return false;
+    
+    // Recursively check for divisibility with decreasing divisor
+    return isPrime(n, divisor - 1);
+}
+
+// Function to print all prime numbers in a given range using recursion
+void printPrimes(int start, int end) {
+    if (start > end)
+        return;
+    
+    if (isPrime(start, start / 2)) // Check if start is prime
+        printf("%d ", start);
+    
+    // Recursively check primes in the range [start+1, end]
+    printPrimes(start + 1, end);
+}
+
+int main() {
+    int start, end;
+
+    printf("Enter the range (start and end): ");
+    scanf("%d %d", &start, &end);
+
+    printf("Prime numbers between %d and %d are: ", start, end);
+    printPrimes(start, end);
+    printf("\n");
+
+    return 0;
+}
