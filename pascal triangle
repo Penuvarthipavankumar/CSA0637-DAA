@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+// Function to print Pascal's triangle
+void printPascalTriangle(int n) {
+    int coefficients[n][n];
+
+    // Initialize coefficients for the first two rows
+    for (int i = 0; i < n; i++) {
+        coefficients[i][0] = 1; // First column is always 1
+        coefficients[i][i] = 1; // Diagonal elements are always 1
+    }
+
+    // Calculate coefficients for other entries
+    for (int i = 2; i < n; i++) {
+        for (int j = 1; j < i; j++) {
+            coefficients[i][j] = coefficients[i - 1][j - 1] + coefficients[i - 1][j];
+        }
+    }
+
+    // Print Pascal's triangle
+    printf("Pascal's Triangle:\n");
+    for (int i = 0; i < n; i++) {
+        // Print leading spaces
+        for (int k = 0; k < n - i - 1; k++) {
+            printf(" ");
+        }
+
+        // Print the coefficients for the current row
+        for (int j = 0; j <= i; j++) {
+            printf("%d ", coefficients[i][j]);
+        }
+        
+        printf("\n"); // Move to the next line after each row
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of rows for Pascal's triangle: ");
+    scanf("%d", &n);
+
+    printPascalTriangle(n);
+
+    return 0;
+}
