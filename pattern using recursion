@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+// Function to print the pattern recursively
+void printPattern(int n, int i, int j) {
+    // Base case: if i exceeds n, return
+    if (i > n)
+        return;
+
+    // If j exceeds i, print a newline and recursively call printPattern for the next row
+    if (j > i) {
+        printf("\n");
+        printPattern(n, i + 1, 1);
+        return;
+    }
+
+    // Print the number j followed by a space
+    printf("%d ", j);
+
+    // Recursively call printPattern for the same row with incremented j
+    printPattern(n, i, j + 1);
+}
+
+int main() {
+    int n = 4; // Change the value of n to change the number of rows
+    printPattern(n, 1, 1);
+    return 0;
+}
